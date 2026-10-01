@@ -68,12 +68,9 @@ init -2 python:
 
             if clock >= trigger and character not in " \n\t":
                 output.append("".join(closing_tags))
-                if "weighted_pauses" in parser_data:
-                    pauses = list(parser_data["weighted_pauses"].keys())
-                    weights = list(parser_data["weighted_pauses"].values())
-                    actual_pause = random.choices(pauses,weights=weights,k=1)[0]
-                else:
-                    actual_pause = random.uniform(*parser_data["random_pauses"])
+
+                actual_pause = calculate_nonspeech_pause(parser_data["pauses"])
+
                 output.append(f"{{w={actual_pause}}}")
                 opening_tags,closing_tags = generate_broken_tags(parser_data)
                 output.append("".join(opening_tags))
