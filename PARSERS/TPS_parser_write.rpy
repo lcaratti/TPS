@@ -89,16 +89,7 @@ init -2 python:
                 else:
                     cps_switch_chance = parser_data["cps"]["slowdown"]["slow_chance"]
 
-                if "weighted_pauses" in parser_data["pauses"]:
-                    pauses = list(parser_data["pauses"]["weighted_pauses"].keys())
-                    weights = list(parser_data["pauses"]["weighted_pauses"].values())
-                    pause_range = random.choices(pauses,weights=weights,k=1)[0]
-                    if isinstance(pause_range,(list,tuple)):
-                        actual_pause = random.uniform(*pause_range)
-                    else:
-                        actual_pause = pause_range
-                else:
-                    actual_pause = random.uniform(*parser_data["pauses"]["random_pause"])
+                actual_pause = calculate_nonspeech_pause(parser_data["pauses"])
 
                 if is_slow:
                     cps_switch = random.random() > cps_switch_chance
