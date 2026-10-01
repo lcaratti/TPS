@@ -477,3 +477,30 @@ init -2 python:
         pause_jitter = calculate_jitter(speaker,parser_data["jitter"][pause_group],pause_group)
 
         return base_pause_value * (1 + pause_jitter)
+
+    def calculate_nonspeech_pause(pause_data):
+# function centralizing the calculation of pause values for {write}, {chat}, and {broken} parsers.
+#
+# args:
+#        pause_data -> the "pause" section of a character's profile dictionary, containing the information the function
+#                      requires to calculate the pause value
+#
+# usage:
+#        pause_value = calculate_nonspeech_pause(pause_data)
+#
+# returns:
+#        function returns a float
+
+        if "weighted_pauses" in pause_data:
+            pauses = list(pause_data["weighted_pauses"].keys())
+            weights = list(pause_data["weighted_pauses"].values())
+            pause_range = random.choices(pauses,weights,k=1)[0]
+        elif "random_pause" in pause_data:
+            pause_range = pause_data["random_pause"]
+        else:
+            return 0
+
+        if isinstance(pause_range,(list,tuple):
+            return random.uniform(*pause_range)
+        else:
+            return pause_range
