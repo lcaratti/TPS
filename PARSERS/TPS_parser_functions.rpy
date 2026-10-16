@@ -2,7 +2,7 @@ init -2 python:
 # ------------------------------------------------------------------------
 # FUNCTIONS USED BY THE "BROKEN" PARSER
 # ------------------------------------------------------------------------  
-    def generate_broken_tags(parser_data):
+    def generate_broken_tags(speaker,parser_data):
 # function generating opening and closing style tags for the "broken" parser
 #
 # args:
@@ -25,7 +25,7 @@ init -2 python:
         color = f"#ffffff{alpha:02x}"
         shader = parser_data["modifiers"]["shader"]
 
-        cps_multiplier = calculate_cps_multiplier(parser_data["cps"],"broken")
+        cps_multiplier = calculate_cps_multiplier(speaker,parser_data["cps"],"broken")
 
         if size > 0:
             opening_tags.append(f"{{size=+{size}}}")
@@ -34,7 +34,7 @@ init -2 python:
         if font != gui.text_font:
             opening_tags.append(f"{{font={font}}}")
         if font_weight is not None and font_weight != gui.text_axis["weight"]:
-            opening_tags.append(f"{{axis:width={font_weight}}}")
+            opening_tags.append(f"{{axis:weight={font_weight}}}")
         if color != None:
             opening_tags.append(f"{{color={color}}}")
 # cps should always be the last tag to open and the first to be closed
@@ -329,7 +329,7 @@ init -2 python:
             
         return clean_string
 
-    def calculate_cps_multiplier(speaker,parser_data,section,is_slow,anxiety = False):
+    def calculate_cps_multiplier(speaker,parser_data,section,is_slow = False,anxiety = False):
 # helper function calculating the cps multiplier that goes into the {cps} tag
 #
 # args:
@@ -500,7 +500,7 @@ init -2 python:
         else:
             return 0
 
-        if isinstance(pause_range,(list,tuple):
+        if isinstance(pause_range,(list,tuple)):
             return random.uniform(*pause_range)
         else:
             return pause_range

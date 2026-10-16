@@ -25,23 +25,27 @@ init -1 python:
         global _TPS_PARSING_TAGS,_TPS_MODIFIER_TAGS
 
         if text.startswith("{speech}") or any(text.startswith(tag) for tag in _TPS_MODIFIER_TAGS):
-            print("Skipping because I found {speech} or a modifier tag")
+            if _DEBUG:
+                print("Skipping because I found {speech} or a modifier tag")
             return text
 
         if store.mode in (None, "speech"):
-            print("Skipping because store.mode is not defined (",repr(store.mode))
+            if _DEBUG:
+                print("Skipping because store.mode is not defined (",repr(store.mode))
             return text
 
         for mode_tag, key in _TPS_PARSING_TAGS.items():
-            print("I'm looking for ",repr(key))
             if store.mode == key:
                 if text.startswith(mode_tag):
-                    print("Skipping because the text already has the correct parsing tag (",repr(mode_tag))
+                    if _DEBUG:
+                        print("Skipping because the text already has the correct parsing tag (",repr(mode_tag))
                     return text
                 if store.mode == "chat" and speaker == "narr":
-                    print("Skipping because we're chatting but the narrator's speaking")
+                    if _DEBUG:
+                        print("Skipping because we're chatting but the narrator's speaking")
                     return text
-                print("Returning ",repr(mode_tag+text))
+                if _DEBUG:
+                    print("Returning ",repr(mode_tag+text))
                 return mode_tag+text
 
         return text

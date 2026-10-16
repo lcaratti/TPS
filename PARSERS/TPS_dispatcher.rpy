@@ -38,9 +38,6 @@ init -1 python:
 # 1) injects partser tags based on the value of the store.mode variable
         text = inject_persistent_mode(speaker, text)
 
-        print("set_mode is: ",repr(store.mode))
-        print("Line processed by the injector: ",repr(text))
-
 # 2) check that the string is correctly formatted: the TPS parser can only accept 1 special parsing tag
 # The broken state overrides special tags hence it'll only throw a warning message in the console
 # having multiple tags without the broken state override will instead result in an error

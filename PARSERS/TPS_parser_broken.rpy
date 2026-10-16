@@ -22,14 +22,14 @@ init -2 python:
         text = remove_custom_tags(text)
         output = []
 
-        opening_tags,closing_tags = generate_broken_tags(parser_data)
-
+        opening_tags,closing_tags = generate_broken_tags(speaker,parser_data)
+        
         output.append("".join(opening_tags))
 
         if renpy.is_skipping() or persistent.dynamic_text_speed == 2:
             output.append(text)
             output.append("".join(closing_tags))
-            return output
+            return None,"".join(output)
 
         i = 0
         clock,trigger = 0,random.randint(*parser_data["pauses"]["trigger_interval"])
@@ -50,14 +50,14 @@ init -2 python:
             if text.startswith("...",i):                                    # finds ellipsis, consider it as single character
                 output.append("...")
                 i += 3
-                if not parser_data["ignore_punctuation"]:
+                if not parser_data["pauses"]["ignore_punctuation"]:
                     clock += 1
                 continue
 
-            if character in punct.map.keys():                               # finds punctuation mark
+            if character in punct_map.keys():                               # finds punctuation mark
                 i += 1
                 output.append(character)
-                if not parser_data["ignore_punctuation"]:
+                if not parser_data["pauses"]["ignore_punctuation"]:
                     clock += 1
                 continue
 
@@ -68,20 +68,24 @@ init -2 python:
 
             if clock >= trigger and character not in " \n\t":
                 output.append("".join(closing_tags))
-
                 actual_pause = calculate_nonspeech_pause(parser_data["pauses"])
 
                 output.append(f"{{w={actual_pause}}}")
-                opening_tags,closing_tags = generate_broken_tags(parser_data)
+                opening_tags,closing_tags = generate_broken_tags(speaker,parser_data)
+                output.append(f"{character}")
                 output.append("".join(opening_tags))
 # introduces stuttering when text speed changes
-                if random.random() > parser_data["stutter_likelihood"]:
+                if random.random() > parser_data["pauses"]["stutter_likelihood"]:
                     i +=1
-                trigger = 0,random.randint(*parser_data["trigger_interval"])
+                else:
+                    output.append("-")
+                clock,trigger = 0,random.randint(*parser_data["pauses"]["trigger_interval"])
             else:
                 output.append(f"{character}")
                 clock +=1
                 i +=1
             
-            output.append("".join(closing_tags))
-            return None,"".join(output)
+        output.append("".join(closing_tags))
+        return None,"".join(output)
+
+

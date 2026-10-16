@@ -122,7 +122,6 @@ init -1 python:
                 characters.append(char)
 
                 if mood == "broken":
-                    reset_jitter_state(char)
                     store.transition_states[char] = [0,0]
                 elif lines <= 1:
                     store.transition_states[char] = [0,0]

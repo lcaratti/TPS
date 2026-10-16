@@ -467,3 +467,9 @@ init -1 python:
             return "#{:02x}{:02x}{:02x}{:02x}".format(r,g,b,a)
 
         return rgb_to_hex(r_int,g_int,b_int,a_int)
+
+    debug_file = open("broken_debug.txt", "w", encoding="utf-8")
+
+    def debug(*args):
+        print(*args, file=debug_file)
+        debug_file.flush()
