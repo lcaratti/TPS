@@ -428,7 +428,7 @@ init -2 python:
 # returns:
 #       Function returns a float
         period = parser_data.get("period",13)
-        phase = int(store.jitter_states[speaker][jitter_group]) % parser_data.get("period",13)
+        phase = store.jitter_states[speaker][jitter_group]
         amount = parser_data.get("amount",0)
         store.jitter_states[speaker][jitter_group] += 1
         return amount * math.sin(2 * math.pi * phase / period)
