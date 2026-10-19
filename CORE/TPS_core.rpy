@@ -121,6 +121,8 @@ init -1 python:
 # 4) applies rhythm to the "what" string and retrieves special effects
         effects, new_what = rhythmize_string(char_name, what, actual_profile, is_broken)
 
+        print("The new what is: ",repr(new_what))
+
         if _DEBUG:
 # debugging step: the validate_tags() function checks the modified dialogue line for broken tags
             validate_tags(new_what)

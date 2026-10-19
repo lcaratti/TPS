@@ -11,6 +11,7 @@ init -100 python:
 
     _TPS_DATA_SKELETON = {
         "TPS_characters_register": {},
+        "TPS_objects_register": {},
         "character_profiles": {},
         "moods": {
         "start": {},
@@ -23,7 +24,8 @@ init -100 python:
         "current_narrator": "",
         "_group_id_counter": 0,
         "mode": "speech",
-        "presentation_mode": "adv"
+        "presentation_mode": "adv",
+        "typing_dots": 0
     }
 
     _JITTER_GROUPS = {

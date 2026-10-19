@@ -3,7 +3,7 @@ init offset = -1
 ################################################################################
 ## TYPING SCREEN FOR THE CHAT PARSER
 ################################################################################
-screen typing(who):
+screen typing():
     #zorder 100
     window:
         id "typing_window"
@@ -25,7 +25,9 @@ screen typing(who):
         text "typing" + "." * store.typing_dots:
             id "typing_what"
             style "say_dialogue"
-        timer 0.3 repeat True action SetVariable("typing_dots",(store.typing_dots % 3) + 1)
+        timer 0.4 repeat True action SetVariable("typing_dots",(store.typing_dots % 3) + 1)
 
-style typing_window is window
-style typing_say is default
+style typing_window is window:
+    background None
+style typing_say is default:
+    background None

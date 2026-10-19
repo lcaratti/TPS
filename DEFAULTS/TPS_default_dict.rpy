@@ -306,7 +306,7 @@ init -1 python:
 #    - "ignore_punctuation": when True, the module will not count punctuation when counting how many glyphs till the next check for a change in tapping speed
 #    - "pause_weights": a dict of key:value items. The key specifies the pause duration, while the value specifies the likelihood for the pause to last "key" seconds
                 "pauses": {
-                    "interval": [8,16],          
+                    "fast_interval": [8,16],          
                     "slow_interval": [5,10],
                     "ignore_punctuation": False,  # will *not* ignore punctuation when counting characters
                     "weighted_pauses": {

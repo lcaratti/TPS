@@ -227,7 +227,7 @@ init -9 python:
                             }
                         },
                 "pauses": {
-                    "interval": [6,18],          
+                    "fast_interval": [6,18],          
                     "slow_interval": [4,12],
                     "ignore_punctuation": False,  # will *not* ignore punctuation when counting characters
                     "weighted_pauses": {
@@ -382,7 +382,7 @@ init -9 python:
                             }
                         },
                 "pauses": {
-                    "interval": [5,15],          
+                    "fast_interval": [5,15],          
                     "slow_interval": [4,10],
                     "ignore_punctuation": False,  # will *not* ignore punctuation when counting characters
                     "weighted_pauses": {
@@ -540,7 +540,7 @@ init -9 python:
                             }
                         },
                 "pauses": {
-                    "interval": [7,19],          
+                    "fast_interval": [7,19],          
                     "slow_interval": [4,16],
                     "ignore_punctuation": False,  # will *not* ignore punctuation when counting characters
                     "weighted_pauses": {
@@ -686,7 +686,7 @@ init -9 python:
                             }
                         },
                 "pauses": {
-                    "interval": [5,15],          
+                    "fast_interval": [5,15],          
                     "slow_interval": [3,9],
                     "ignore_punctuation": False,  # will *not* ignore punctuation when counting characters
                     "weighted_pauses": {
@@ -839,7 +839,7 @@ init -9 python:
                             }
                         },
                 "pauses": {
-                    "interval": [5,15],          
+                    "fast_interval": [5,15],          
                     "slow_interval": [5,12],
                     "ignore_punctuation": False,  # will *not* ignore punctuation when counting characters
                     "weighted_pauses": {
@@ -998,7 +998,7 @@ init -9 python:
                             }
                         },
                 "pauses": {
-                    "interval": [5,16],          
+                    "fast_interval": [5,16],          
                     "slow_interval": [4,14],
                     "ignore_punctuation": False,  # will *not* ignore punctuation when counting characters
                     "weighted_pauses": {

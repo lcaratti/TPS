@@ -23,7 +23,7 @@ init -2 python:
 
         is_slow = random.random() <= parser_data["cps"]["slowdown"]["slow_start"]
 
-        opening_tags,closing_tags = generate_nonbroken_tags(parser_data,"chat",is_slow)
+        opening_tags,closing_tags = generate_nonbroken_tags(speaker,parser_data,"chat",is_slow)
 
         output.append("".join(opening_tags))
 
@@ -34,38 +34,38 @@ init -2 python:
 
 # if the speaker is not the narrator, then the reader does not get to see the message being tapped "real-time". They
 # just see the "Typing..." screen and then the message pops up all at once
-        if speaker != "narr":
+        if speaker != store.current_narrator:
             if starting_pause is not None:
                 renpy.pause(starting_pause)
             if total_time is not None:
                 if timeline > 0:
-                    timeline = timeline_from_fixed(text,total_time,parser_data["pauses"])
+                    timeline = timeline_from_fixed(speaker,text,total_time,parser_data["pauses"])
                 else:
                     output.append(text)
                     output.append("".join(closing_tags))
                     output.append(f"{{fast}}")
                     return output
             else:
-                timeline = timeline_from_typing(text,parser_data,is_slow)
+                timeline = timeline_from_typing(speaker,text,parser_data,is_slow)
 
-            speaker_char_obj = TPS_characters_register[speaker]
+            speaker_char_obj = TPS_objects_register[speaker]
             store.typing_who = renpy.substitute(speaker_char_obj.name)
             store.typing_who_args = dict(getattr(speaker_char_obj,"who_args",{}))
 
             for index,chunk in enumerate(timeline):
                 if index % 2 == 0:
-                    renpy.show_screen(typing(speaker_char_obj))
+                    renpy.show_screen("typing")#(speaker_char_obj))
                 else:
-                    renpy.hide_screen(typing)
+                    renpy.hide_screen("typing")
     
                 renpy.pause(chunk)
             
-            renpy.hide_screen(typing)
+            renpy.hide_screen("typing")
 
             output.append(text)
             output.append("".join(closing_tags))
             output.append(f"{{fast}}")
-            return output
+            return parser_data["modifiers"]["effects"],"".join(output)
 
 # if the speaker is the narrator, then the message gets typed into the textbox and gets rhythmized properly, as if
 # it was dialogue line - only, pauses do not follow punctuation but are scattered across the text, and cps varies
@@ -74,7 +74,7 @@ init -2 python:
         if is_slow:
             clock,trigger = 0,random.randint(*parser_data["pauses"]["slow_interval"])
         else:
-            clock,trigger = 0,random.randint(*parser_data["pauses"]["interval"])
+            clock,trigger = 0,random.randint(*parser_data["pauses"]["fast_interval"])
 
         while i < len(text):
             character = text[i]
@@ -92,14 +92,14 @@ init -2 python:
             if text.startswith("...",i):                                    # finds ellipsis, consider it as single character
                 output.append("...")
                 i += 3
-                if not parser_data["pauses_chat"]["ignore_punctuation"]:
+                if not parser_data["pauses"]["ignore_punctuation"]:
                     clock += 1
                 continue
 
-            if character in punct.map.keys():                               # finds punctuation mark
+            if character in punct_map.keys():                               # finds punctuation mark
                 i += 1
                 output.append(character)
-                if not parser_data["pauses_chat"]["ignore_punctuation"]:
+                if not parser_data["pauses"]["ignore_punctuation"]:
                     clock += 1
                 continue
 
@@ -110,9 +110,9 @@ init -2 python:
 
             if clock >= trigger:
                 if character not in " \n\t":
-                    cps_switch_chance = parser_data["cps"]["slow_chance_midword"]
+                    cps_switch_chance = parser_data["cps"]["slowdown"]["slow_chance_midword"]
                 else:
-                    cps_switch_chance = parser_data["cps"]["slow_chance"]
+                    cps_switch_chance = parser_data["cps"]["slowdown"]["slow_chance"]
 
                 actual_pause = calculate_nonspeech_pause(parser_data["pauses"])
 
@@ -125,7 +125,7 @@ init -2 python:
                     is_slow = not is_slow
                     output.append(f"{{/cps}}")
         
-                    this_chunk_cps = calculate_cps_multiplier(parser_data["cps"],"write",is_slow)
+                    this_chunk_cps = calculate_cps_multiplier(speaker,parser_data,"chat",is_slow)
 
                     output.append(f"{{w={actual_pause}}}{{cps=*{this_chunk_cps}}}{character}")
                 else:
@@ -134,7 +134,7 @@ init -2 python:
                 if is_slow:
                     clock,trigger = 0,random.randint(*parser_data["pauses"]["slow_interval"])
                 else:
-                    clock,trigger = 0,random.randint(*parser_data["pauses"]["interval"])
+                    clock,trigger = 0,random.randint(*parser_data["pauses"]["fast_interval"])
                 i += 1
             else:
                 output.append(f"{character}")

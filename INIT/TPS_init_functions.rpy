@@ -69,6 +69,7 @@ init -99 python:
         profile = TPS_Character.profile
 
         getattr(namespace,"TPS_characters_register").setdefault(name,profile)
+        getattr(namespace,"TPS_objects_register").setdefault(name,TPS_Character)
         getattr(namespace,"moods")["start"].setdefault(name,"base")
         getattr(namespace,"moods")["target"].setdefault(name,"base")
         getattr(namespace,"transition_states").setdefault(name,[0,0])

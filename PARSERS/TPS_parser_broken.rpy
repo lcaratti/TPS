@@ -72,8 +72,8 @@ init -2 python:
 
                 output.append(f"{{w={actual_pause}}}")
                 opening_tags,closing_tags = generate_broken_tags(speaker,parser_data)
-                output.append(f"{character}")
                 output.append("".join(opening_tags))
+                output.append(f"{character}")
 # introduces stuttering when text speed changes
                 if random.random() > parser_data["pauses"]["stutter_likelihood"]:
                     i +=1

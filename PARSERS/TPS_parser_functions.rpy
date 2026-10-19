@@ -123,7 +123,7 @@ init -2 python:
 
         return start,total,text
 
-    def timeline_from_fixed(text,time,pauses_data):
+    def timeline_from_fixed(speaker,text,time,pauses_data):
 # function that builds a chat message tapping timeline ("Typing..." screen appearing and disappearing) considering a fixed
 # time span
 #
@@ -168,7 +168,7 @@ init -2 python:
 
         return timeline
 
-    def timeline_from_typing(text,parser_data,is_slow):
+    def timeline_from_typing(speaker,text,parser_data,is_slow):
 # function that builds a chat message tapping timeline ("Typing..." screen appearing and disappearing) calculating how long the
 # character is supposed to take to type the message itself
 #
@@ -190,8 +190,9 @@ init -2 python:
 
         while characters_left > 0:
     
-            cps_multiplier = calculate_cps_multiplier(parser_data,"chat",is_slow)
+            cps_multiplier = calculate_cps_multiplier(speaker,parser_data,"chat",is_slow)
 
+            print("Handling this: ",repr(parser_data["pauses"]))
             if is_slow:
                 typed_this_round = min(characters_left,random.randint(*parser_data["pauses"]["slow_interval"]))
             else:
