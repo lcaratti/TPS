@@ -48,14 +48,25 @@ init -2 python:
             else:
                 timeline = timeline_from_typing(speaker,text,parser_data,is_slow)
 
-            speaker_char_obj = TPS_objects_register[speaker]
-            store.typing_who = renpy.substitute(speaker_char_obj.name)
-            who_color = speaker_char_obj.get("who_color",gui.text_color)
-            what_color = parser_data["modifiers"]["col"]
+            speaker_obj = TPS_objects_register.get(speaker,None)
+
+            if speaker_obj is not None:
+                this_who_name = renpy.substitute(speaker_obj.name)
+                this_who_color = getattr(speaker_obj,"who_color",gui.text_color)
+            else:
+                speaker_obj_renpychar = getattr(store, speaker, None)
+
+                if speaker_obj_renpychar is not None:
+                    speaker_obj_renpychar = getattr(store,speaker)
+                    this_who_name = renpy.substitute(speaker_obj_renpychar.name)
+                    this_who_color = getattr(speaker_obj_renpychar,"who_color",gui.text_color)
+                else:
+                    this_who_name = str(speaker)
+                    this_who_color = gui.text_color
 
             for index,chunk in enumerate(timeline):
                 if index % 2 == 0:
-                    renpy.show_screen("typing",who_color=who_color,what_color=what_color)
+                    renpy.show_screen("typing",who_name=this_who_name,who_color=this_who_color)
                 else:
                     renpy.hide_screen("typing")
     
