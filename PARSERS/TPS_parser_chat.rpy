@@ -50,11 +50,12 @@ init -2 python:
 
             speaker_char_obj = TPS_objects_register[speaker]
             store.typing_who = renpy.substitute(speaker_char_obj.name)
-            store.typing_who_args = dict(getattr(speaker_char_obj,"who_args",{}))
+            who_color = speaker_char_obj.get("who_color",gui.text_color)
+            what_color = parser_data["modifiers"]["col"]
 
             for index,chunk in enumerate(timeline):
                 if index % 2 == 0:
-                    renpy.show_screen("typing")#(speaker_char_obj))
+                    renpy.show_screen("typing",who_color=who_color,what_color=what_color)
                 else:
                     renpy.hide_screen("typing")
     
