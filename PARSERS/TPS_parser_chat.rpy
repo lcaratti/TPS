@@ -49,19 +49,31 @@ init -2 python:
                 timeline = timeline_from_typing(speaker,text,parser_data,is_slow)
 
             if isinstance(TPS_objects_register.get(speaker,None),TPSCharacter):
-                active_char = getattr(TPS_objects_register.get(speaker), store.presentation_mode)
+                active_char = TPS_objects_register.get(speaker)
             elif isinstance(getattr(store,speaker,None),Character):
                 active_char = getattr(store,speaker)
             else:
                 active_char = speaker
 
-            store.chat_who_name = getattr(active_char,"name",speaker)
-            store.chat_who_style = getattr(active_char, "style", "default")
-            store.chat_who_color = getattr(active_char, "color", gui.text_color)
+            this_chat_who_name = getattr(active_char,"name",speaker)
+            this_chat_who_args = getattr(active_char, "who_args", gui.text_color)
 
+            if this_chat_who_args != gui.text_color:
+                this_chat_who_color = this_chat_who_args.get("color",gui.text_color)
+            else:
+                this_chat_who_color = this_chat_who_args
+
+
+            if _DEBUG:
+                print("Tapping character is ",repr(this_chat_who_name)," and their color is ",repr(this_chat_who_color))
+
+            print("Tapping character is ",repr(this_chat_who_name)," and their color is ",repr(this_chat_who_color))
+            print(isinstance(active_char,TPSCharacter))
+            print(getattr(getattr(active_char,store.presentation_mode),"who_args"))
+            print("Then I should pick ",this_chat_who_color)
             for index,chunk in enumerate(timeline):
                 if index % 2 == 0:
-                    renpy.show_screen("typing")
+                    renpy.show_screen("typing",chat_who_name=this_chat_who_name,chat_who_color=this_chat_who_color)
                 else:
                     renpy.hide_screen("typing")
             
