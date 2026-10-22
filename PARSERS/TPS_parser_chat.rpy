@@ -30,7 +30,7 @@ init -2 python:
         if renpy.is_skipping() or persistent.dynamic_text_speed == 2:
             output.append(text)
             output.append("".join(closing_tags))
-            return output
+            return None,"".join(output)
 
 # if the speaker is not the narrator, then the reader does not get to see the message being tapped "real-time". They
 # just see the "Typing..." screen and then the message pops up all at once
@@ -44,36 +44,30 @@ init -2 python:
                     output.append(text)
                     output.append("".join(closing_tags))
                     output.append(f"{{fast}}")
-                    return output
+                    return parser_data["modifiers"]["effects"],"".join(output)
             else:
                 timeline = timeline_from_typing(speaker,text,parser_data,is_slow)
 
-            speaker_obj = TPS_objects_register.get(speaker,None)
-
-            if speaker_obj is not None:
-                this_who_name = renpy.substitute(speaker_obj.name)
-                this_who_color = getattr(speaker_obj,"who_color",gui.text_color)
+            if isinstance(TPS_objects_register.get(speaker,None),TPSCharacter):
+                active_char = getattr(TPS_objects_register.get(speaker), store.presentation_mode)
+            elif isinstance(getattr(store,speaker,None),Character):
+                active_char = getattr(store,speaker)
             else:
-                speaker_obj_renpychar = getattr(store, speaker, None)
+                active_char = speaker
 
-                if speaker_obj_renpychar is not None:
-                    speaker_obj_renpychar = getattr(store,speaker)
-                    this_who_name = renpy.substitute(speaker_obj_renpychar.name)
-                    this_who_color = getattr(speaker_obj_renpychar,"who_color",gui.text_color)
-                else:
-                    this_who_name = str(speaker)
-                    this_who_color = gui.text_color
+            store.chat_who_name = getattr(active_char,"name",speaker)
+            store.chat_who_style = getattr(active_char, "style", "default")
+            store.chat_who_color = getattr(active_char, "color", gui.text_color)
 
             for index,chunk in enumerate(timeline):
                 if index % 2 == 0:
-                    renpy.show_screen("typing",who_name=this_who_name,who_color=this_who_color)
+                    renpy.show_screen("typing")
                 else:
                     renpy.hide_screen("typing")
-    
+            
                 renpy.pause(chunk)
             
             renpy.hide_screen("typing")
-
             output.append(text)
             output.append("".join(closing_tags))
             output.append(f"{{fast}}")
