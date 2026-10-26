@@ -19,6 +19,11 @@ init -2 python:
 #           rhythm tags, and a list of special effects the master parser will make happen when passing everything
 #           back to the original Ren'Py pipeline
 
+        enable_stutter = True
+
+        if text.startswith("{nostutter}"):
+            enable_stutter = False
+
         text = remove_custom_tags(text)
         output = []
 
@@ -75,10 +80,10 @@ init -2 python:
                 output.append("".join(opening_tags))
                 output.append(f"{character}")
 # introduces stuttering when text speed changes
-                if random.random() > parser_data["pauses"]["stutter_likelihood"]:
-                    i +=1
-                else:
-                    output.append("-")
+                    if enable_stutter and random.random() <= parser_data["pauses"]["stutter_likelihood"]:
+                        output.append("-")
+                    else:
+                        i +=1
                 clock,trigger = 0,random.randint(*parser_data["pauses"]["trigger_interval"])
             else:
                 output.append(f"{character}")
