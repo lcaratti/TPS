@@ -32,11 +32,12 @@ init -2 python:
             output.append("".join(closing_tags))
             return None,"".join(output)
 
+        if starting_pause is not None:
+            renpy.pause(starting_pause)
+
 # if the speaker is not the narrator, then the reader does not get to see the message being tapped "real-time". They
 # just see the "Typing..." screen and then the message pops up all at once
         if speaker != store.current_narrator:
-            if starting_pause is not None:
-                renpy.pause(starting_pause)
             if total_time is not None:
                 if timeline > 0:
                     timeline = timeline_from_fixed(speaker,text,total_time,parser_data["pauses"])
