@@ -67,7 +67,8 @@ init -1 python:
     _TPS_MODIFIER_TAGS = {
         "{shout}": "shout",
         "{whisper}": "whisper",
-        "{think}": "think"
+        "{think}": "think",
+        "{nostutter}": None
     }
 
     _TPS_JITTER_FUNCTIONS = {
