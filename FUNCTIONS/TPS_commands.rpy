@@ -136,7 +136,7 @@ init -1 python:
         if match and store.current_narrator in characters:
             store.moods["target"]["narr"] = store.moods["target"][store.current_narrator]
 
-    def reset_moods(*char_list,match=True):
+    def reset_mood(*char_list,match=True):
 # function that resets the mood of one or more characters back to their base state
 #
 # args:
