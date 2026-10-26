@@ -493,11 +493,14 @@ init -2 python:
 #        function returns a float
 
         if "weighted_pauses" in pause_data:
-            pauses = list(pause_data["weighted_pauses"].keys())
-            weights = list(pause_data["weighted_pauses"].values())
-            pause_range = random.choices(pauses,weights,k=1)[0]
-        elif "random_pause" in pause_data:
-            pause_range = pause_data["random_pause"]
+            if isinstance(pause_data["weighted_pauses"],dict):
+                pauses = list(pause_data["weighted_pauses"].keys())
+                weights = list(pause_data["weighted_pauses"].values())
+                pause_range = random.choices(pauses,weights,k=1)[0]
+            elif isinstance(pause_data["weighted_pauses"],(int,float)) and not isinstance(pause_data["weighted_pauses"],bool):
+                pause_range = pause_data["weighted_pauses"]
+            else:
+                return 0
         else:
             return 0
 
