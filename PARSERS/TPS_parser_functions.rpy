@@ -119,9 +119,10 @@ init -2 python:
             if total_match:
                 total = float(total_match.group(1))
 
-            text = text[tag_ends+1:]
+            cleaned_text = text[tag_ends+1:]
+            print("Cleaned-up text is: ",repr(cleaned_text))
 
-        return start,total,text
+        return start,total,cleaned_text
 
     def timeline_from_fixed(speaker,text,time,pauses_data):
 # function that builds a chat message tapping timeline ("Typing..." screen appearing and disappearing) considering a fixed
@@ -142,7 +143,7 @@ init -2 python:
         n_pauses = 0
         timeline = []
 
-        n_chunks = ceil(len(text) / random.uniform(8,16))
+        n_chunks = math.ceil(len(text) / random.uniform(8,16))
         n_pauses = n_chunks - 1
 
         if pauses_data.get("weighted_pauses",False):
@@ -322,6 +323,10 @@ init -2 python:
         for parsing_tag in _TPS_PARSING_TAGS.keys():
             if clean_string.startswith(parsing_tag):
                 clean_string = clean_string[len(parsing_tag):]
+
+# SPECIAL CLEANING OPERATION FOR COMPLEX CHAT TAGS
+        if clean_string.startswith("{chat"):
+            clean_string = clean_string[clean_string.index("}")+1:]
 
 # ADD MORE MODIFIER TAGS TO INIT LIST AS REQUIRED
         for modifier_tag in _TPS_MODIFIER_TAGS.keys():

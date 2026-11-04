@@ -17,8 +17,10 @@ init -2 python:
 #           back to the original Ren'Py pipeline
 
         starting_pause,total_time,text = parse_chat_tags(text)
+        print("Cleaned-up text is: ",repr(text))
                                                                                                           
         text = remove_custom_tags(text)
+        print("And then further a second cleaning step: ",repr(text))
         output = []
 
         is_slow = random.random() <= parser_data["cps"]["slowdown"]["slow_start"]
@@ -39,7 +41,7 @@ init -2 python:
 # just see the "Typing..." screen and then the message pops up all at once
         if speaker != store.current_narrator:
             if total_time is not None:
-                if timeline > 0:
+                if total_time > 0:
                     timeline = timeline_from_fixed(speaker,text,total_time,parser_data["pauses"])
                 else:
                     output.append(text)
@@ -68,10 +70,6 @@ init -2 python:
             if _DEBUG:
                 print("Tapping character is ",repr(this_chat_who_name)," and their color is ",repr(this_chat_who_color))
 
-            print("Tapping character is ",repr(this_chat_who_name)," and their color is ",repr(this_chat_who_color))
-            print(isinstance(active_char,TPSCharacter))
-            print(getattr(getattr(active_char,store.presentation_mode),"who_args"))
-            print("Then I should pick ",this_chat_who_color)
             for index,chunk in enumerate(timeline):
                 if index % 2 == 0:
                     renpy.show_screen("typing",chat_who_name=this_chat_who_name,chat_who_color=this_chat_who_color)

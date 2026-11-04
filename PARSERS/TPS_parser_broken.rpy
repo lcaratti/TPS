@@ -80,10 +80,10 @@ init -2 python:
                 output.append("".join(opening_tags))
                 output.append(f"{character}")
 # introduces stuttering when text speed changes
-                    if enable_stutter and random.random() <= parser_data["pauses"]["stutter_likelihood"]:
-                        output.append("-")
-                    else:
-                        i +=1
+                if enable_stutter and random.random() <= parser_data["pauses"]["stutter_likelihood"]:
+                    output.append("-")
+                else:
+                    i +=1
                 clock,trigger = 0,random.randint(*parser_data["pauses"]["trigger_interval"])
             else:
                 output.append(f"{character}")
