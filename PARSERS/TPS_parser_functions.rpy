@@ -120,7 +120,6 @@ init -2 python:
                 total = float(total_match.group(1))
 
             cleaned_text = text[tag_ends+1:]
-            print("Cleaned-up text is: ",repr(cleaned_text))
 
         return start,total,cleaned_text
 
@@ -193,7 +192,6 @@ init -2 python:
     
             cps_multiplier = calculate_cps_multiplier(speaker,parser_data,"chat",is_slow)
 
-            print("Handling this: ",repr(parser_data["pauses"]))
             if is_slow:
                 typed_this_round = min(characters_left,random.randint(*parser_data["pauses"]["slow_interval"]))
             else:
