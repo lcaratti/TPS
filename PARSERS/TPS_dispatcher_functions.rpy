@@ -15,11 +15,11 @@ init -1 python:
         global _TPS_PARSING_TAGS
 
         for key,parser_ref in _TPS_PARSING_TAGS.items():
+            if key == "{chat}":                                # chat tag may include internal commands so I must slice it
+                key = key[:-1]
             if key in text:
                 return parser_ref
         
-        if "{chat" in text:
-            return "chat"
         return "speech"
 
     def inject_persistent_mode(speaker,text):
