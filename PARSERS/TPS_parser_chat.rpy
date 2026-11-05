@@ -17,10 +17,19 @@ init -2 python:
 #           back to the original Ren'Py pipeline
 
         starting_pause,total_time,text = parse_chat_tags(text)
-        print("Cleaned-up text is: ",repr(text))
+        if _DEBUG:
+            print("Chat tags parsed - cleaned-up line: ",repr(text))
+            if starting_pause:
+                print("Typing indicator bound to appear after ",repr(starting_pause)," seconds")
+            else:
+                print("Typing indicator should appear immediately")
+            if total_time:
+                print("Typing indicator bound to stay on-screen for ",repr(total_time)," seconds")
+            else:
+                print("Typing indicator lasting time calculated via simulated typing routine")
                                                                                                           
-        text = remove_custom_tags(text)
-        print("And then further a second cleaning step: ",repr(text))
+        text = remove_custom_tags(text)                                    # should not be necessary - check. Priority - LOW
+
         output = []
 
         is_slow = random.random() <= parser_data["cps"]["slowdown"]["slow_start"]
